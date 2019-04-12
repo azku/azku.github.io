@@ -96,9 +96,8 @@ We will start the containers in daemon mode, connect to the web container and ex
 docker-compose up -d
 docker-compose exec web /bin/bash
 mix ecto.create
-mix phx.gen.context UserManager User users username:string password:string
 mix ecto.migrate
-docker-compose down
+exit
 {% endhighlight %}
 
 We should now be able to run the composed container and it should be stable at [http://localhost:4243](http://localhost:4243)
