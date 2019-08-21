@@ -101,3 +101,25 @@ exit
 {% endhighlight %}
 
 We should now be able to run the composed container and it should be stable at [http://localhost:4243](http://localhost:4243)
+
+
+
+#### Edit (Aug 20, 2019)
+Further down the line, I will be using some postgres extension. Especifically I'll be using cube and earthdistance. In order to installs these before the database migrations, we need to install the extensions between:
+
+{% highlight shell %}
+mix ecto.create
+{% endhighlight %}
+And
+{% highlight shell %}
+mix ecto.migrate
+{% endhighlight %}
+
+So after executing `ecto.create`, we open another session, log into the database and install the extensions.
+
+{% highlight shell %}
+psql -h 0.0.0.0 -p 5432 -U postgres 
+create extension cube;
+create extension earthdistance;
+\q
+{% endhighlight %}

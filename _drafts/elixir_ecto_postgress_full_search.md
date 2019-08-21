@@ -10,5 +10,6 @@ categories: []
 Building on the previous post about importing camping data into postgres, I would like to make some simple searches against the data.
 I would like that seach to look into countries, places and campsites all at ones, similar to what google does in google maps.
 
-I started my search at the bottom as I am a newby in pretty much every technology I am using and I found a powerfull enough feature in Postgres. So I decided to make the full text search there.
+After a little bit of thought, I  decided to use postgreses power and do the search at the database level. There are 3 related tables in which I would like to search and one column on each table.
 
+I have created a materialized view against
