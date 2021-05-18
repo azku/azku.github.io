@@ -13,4 +13,4 @@ Oraingo honetan, etxeko animaliei buruz dauden datuekin solasaldi bat egiteko pa
 Datuak eskuratzeko ondorengo URL-ra joan beharko gara:
 https://opendata.euskadi.eus/katalogoa/-/eaeko-animaliak-identifikatzeko-erregistro-orokorra-aieo/
 
-[Datuak eskuratzeko aukera desberdinak]({{ site.url }}/assets/images/EAEko_animaliak_identifikatzeko_erregistro_orokorra.png)
+![Datuak eskuratzeko aukera desberdinak]({{ site.url }}/assets/images/EAEko_animaliak_identifikatzeko_erregistro_orokorra.png)

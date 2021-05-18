@@ -25,7 +25,6 @@ description: >- # this means to ignore newlines until "baseurl:"
   zer dan, zelan erabili, zelan uztartu eta zelan ikasi azaltzen saiatu gurako neuke. 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
 github_username:  azku
 
 # Build settings
