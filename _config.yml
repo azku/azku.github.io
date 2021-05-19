@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Zebixe? Jakintzaren atzetit gabixe
+title: Zebixe? Jakintzaren atzetik gabixe
 email: asier@zebixe.com
 description: >- # this means to ignore newlines until "baseurl:"
   Informazioa, komunikazioa eta teknologia deitzen dabe eta
