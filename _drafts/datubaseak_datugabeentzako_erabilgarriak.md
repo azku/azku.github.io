@@ -27,6 +27,8 @@ Datu-basera inportatzeko, Datu-base bat aukeratu beharra daukagu. Orokorrean, me
 Euskal Autonomi Erkidekogo hezkuntza sailak, Microsoft Windows eta Office instalatzen ditu konputagailu gehienetan eta hori dela eta, ikasleek eskuragarri izaten duten Datu-Base sistema bat Microsoft Access izaten da.
 
 Beraz, hori dela eta, Accesen egingo dugu inportazioa eta horretarako Access ireki beharko dugu lehenik.
+![Testu fitxategia inportatzen](/assets/images/access_inportazioa.png)
+
 
 
 
