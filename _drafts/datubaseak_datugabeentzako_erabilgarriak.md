@@ -29,13 +29,21 @@ Euskal Autonomi Erkidekogo hezkuntza sailak, Microsoft Windows eta Office instal
 Beraz, hori dela eta, Accesen egingo dugu inportazioa eta horretarako Access ireki beharko dugu lehenik.
 ![Testu fitxategia inportatzen](/assets/images/access_inportazioa.png)
 
+Aurreko irudian adierazten diren pausoak jarraituz, ondorengo pantaila azalduko zaigu:
+
+![Testu fitxategia inportatzen 2](/assets/images/access_inportazioa_2.png)
+
+Hemen fitxategian datuak nola banatzen diren adierazi beharko dugu. Gure kasuan, punto eta koma erabiltzen da datu mota bakoitza banatzeko. Hurrengo pantailan hori zehaztuko dugu:
+![Testu fitxategia inportatzen 3](/assets/images/access_inportazioa_3.png)
+Lehenengo lerroak zutabeen izenak dituenez, koadro hori aktibatu beharko dugu inportazioak kontutan hartu dezan.
 
 
+Ondoren, inportazioak identifikatu dituen zutabe guztietatik igaro beharko gara eta bakoitzari ez indexatzeko adieraziko diogu eta datu mota testua dela. Ohitura ona izaten da inportazioetan dena testu bezala inportatzea. Horrela datu moten identifikazioarekin arazo gutxiago izango ditugu eta behin datuak datu basean daudela, datu mota eraldaketak egiteko aukera ahaltsuagoak izango ditugu, SQL lengoaiaren abantailak erabili bait ditzakegu.
+![Testu fitxategia inportatzen 4](/assets/images/access_inportazioa_4.png)
 
+Beti ere oinarrizko gakoa izatea interesgarria denez, Accessi esango diogu sortu dezala.
 
-
-
-
+![Testu fitxategia inportatzen 5](/assets/images/access_inportazioa_5.png)
 
 
 [^1]: Berez SQL lengoaiaren definizio estandar bat dago. Errealitatean ordea, produktu komertzial bakoitzak bere inplementazio aldaketak egiten dizkio horrela estandarretik "hurrunduz".
