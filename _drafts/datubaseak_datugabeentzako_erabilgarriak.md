@@ -51,6 +51,6 @@ Beti ere oinarrizko gakoa izatea interesgarria denez, Accessi esango diogu sortu
 ![Testu fitxategia inportatzen 5](/assets/images/access_inportazioa_5.png)
 
 Eta listo! Inportazioarekin bukatzerakoan, animalien erregistroekin beteriko taula prest izan beharko genuke gure datu-basean.
-2. Partean, inportatu berri ditugun datuak nola eraldatu eta moldatu azalduko dut. Aldaketak bilaketetan abiadura eta eskainiko digute eta datuen konsistentzia trikontzea.
+2. Partean, inportatu berri ditugun datuak nola eraldatu eta moldatu azalduko dut. Aldaketak, bilaketetan abiadura eskainiko digute eta datuen konsistentzia trikontzea.
 
 [^1]: Berez SQL lengoaiaren definizio estandar bat dago. Errealitatean ordea, produktu komertzial bakoitzak bere inplementazio aldaketak egiten dizkio horrela estandarretik "hurrunduz".
