@@ -18,11 +18,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Zebixe? Jakintzaren atzetik gabixe
-email: asier@zebixe.com
+title: Azku - Informatika irakaslea
+email: a.azkuenaga@irakasle.eus
 description: >- # this means to ignore newlines until "baseurl:"
-  Informazioa, komunikazioa eta teknologia deitzen dabe eta
-  zer dan, zelan erabili, zelan uztartu eta zelan ikasi azaltzen saiatu gurako neuke. 
+     Jakintza hor dago, baina non? Bilatu daigun!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  azku

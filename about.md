@@ -5,12 +5,15 @@ permalink: /about/
 ---
 
 ## My programming interests:
-I like erlang and lisp. At the moment Microsoft's .NET (C# and VB) pays the bills.
+I like erlang and lisp. I have experience with Microsoft's .NET (C# and VB).
 
 I use Unix like systems on all my side projects. I program on emacs and love to be pragmatic about the environment and software. I am a big believer in automating software building processes.
 
 ## Relevant experience
-2017-current:
+2020-current:
+Computer Science teacher at secondary schools.
+
+2017-2020:
 Technical software developer of CAD-CAE programs at Batz S.COOP.
 
 2007-2017:
