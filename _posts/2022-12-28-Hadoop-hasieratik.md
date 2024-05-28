@@ -6,8 +6,7 @@ tags: [BigData, Hezkuntza]
 categories: [BigData]
 ---
 
-Beraz, aurreko argitalpenean aipatutako moduan, Hadoop ekosistema izan da Big Data aipatzen dugunean, sinonimotzat erabili izan duguna.
-
-Gainetik azaldu atalak
-
-komentatu Hortonworkosen makina eta estekak adierazi
+Garatu hau: 
+https://hub.docker.com/r/apache/hadoop#!
+Bideo interesgarria, 32  minutoan noa:
+https://www.youtube.com/watch?v=f6FJ91f-qpA
