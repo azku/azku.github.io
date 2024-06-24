@@ -5,3 +5,4 @@
 layout: home
 permalink: /
 ---
+Webgune honen helburua, informatikarekin erlazionatuta dauden gaietan biltzen eta sortzen joandako jakintza pilatu eta partekatzea da.

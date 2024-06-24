@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Azku - Informatika irakaslea
+title: Big Data
 email: a.azkuenaga@irakasle.eus
 description: >- # this means to ignore newlines until "baseurl:"
      Jakintza hor dago, baina non? Bilatu daigun!
@@ -32,6 +32,7 @@ markdown: kramdown
 plugins:
   - jekyll-feed
 
+include: [_pages]
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
