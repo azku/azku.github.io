@@ -47,6 +47,51 @@ Behin hau egin eta bezerotik mahaigainak adierazten digun IP helbidean ssh bidez
 
 Docker instalazioa...
 
+bitnami/Moodle kontainer barruan aurredefinituta datorren Moodle bat da.
+{% highlight config %}
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:11.3
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_moodle
+      - MARIADB_DATABASE=bitnami_moodle
+      - MARIADB_CHARACTER_SET=utf8mb4
+      - MARIADB_COLLATE=utf8mb4_unicode_ci
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+  moodle:
+    image: docker.io/bitnami/moodle:4.4
+    ports:
+      - '80:8080'
+      - '443:8443'
+    environment:
+      - MOODLE_USERNAME=asier
+      - MOODLE_PASSWORD=asier
+      - MOODLE_DATABASE_HOST=mariadb
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=bn_moodle
+      - MOODLE_DATABASE_NAME=bitnami_moodle
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - PHP_UPLOAD_MAX_FILESIZE=400M
+      - PHP_POST_MAX_SIZE=400M
+    volumes:
+      - 'moodle_data:/bitnami/moodle'
+      - 'moodledata_data:/bitnami/moodledata'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  moodle_data:
+   driver: local
+  moodledata_data:
+    driver: local
+{% endhighlight %}
+
+
 Apache/Hadoop docker ofiziala erbiltzeko docker irudi ofiziala erabili dezakegu.
 Bertan adierazten den konfigurazioa erabilita exekutatzerakoan arazoak izan ditugu "ulimits" delakoarekin. Konfigurazio fitxategian mugak aldatuta funtzionatzen du. Hona hemen adibide bat:
 
