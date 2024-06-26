@@ -10,7 +10,7 @@ Honen funtzionamenduaren adibide bat eskainiko dut ondoren. Big Data sismetak az
 
 Horretarako, Linux sistema eragilea duen oinarrizko instalazio bat prestatuko dugu lehenik. Instalazio honen gainean docker jarriko dugu eta hau oinarri hartuta zerbitzu desberdinak prestatuko ditugu: Hadoop, Spark, Postgres DBKS bat, No SQL sistema bat...
 
-Hasteko beraz archlinux instalazioarekin habiatuko gara. Lehenik eta behin, media atalean archlinuxen iso-a nondik eskuratu daitekeen esango diogu:
+Hasteko beraz archlinux instalazioarekin abiatuko gara. Lehenik eta behin, media atalean archlinuxen iso-a nondik eskuratu daitekeen esango diogu:
 
 ![Archlinux media sortu](/assets/images/isardvdi_1.png)
 
@@ -47,8 +47,11 @@ Behin hau egin eta bezerotik mahaigainak adierazten digun IP helbidean ssh bidez
 
 Docker instalazioa...
 
-bitnami/Moodle kontainer barruan aurredefinituta datorren Moodle bat da.
-{% highlight config %}
+### Moodle Dockerren
+**Docker** eta **docker-compose** systeman instalaturik daudelarik,  bitnami/Moodle kontainer barruan aurredefinituta datorren Moodle bat da nola eraiki adieraziko da ondorengo lerroetan.
+Horretarako, Mariadb Datu-Basea eta Moodle 4.4 barneratuta dituen docker-compose hau erabili daiteke:
+
+{% highlight yaml %}
 services:
   mariadb:
     image: docker.io/bitnami/mariadb:11.3
@@ -67,14 +70,15 @@ services:
       - '80:8080'
       - '443:8443'
     environment:
-      - MOODLE_USERNAME=asier
-      - MOODLE_PASSWORD=asier
+      - MOODLE_USERNAME=admin
+      - MOODLE_PASSWORD=admin
       - MOODLE_DATABASE_HOST=mariadb
       - MOODLE_DATABASE_PORT_NUMBER=3306
       - MOODLE_DATABASE_USER=bn_moodle
       - MOODLE_DATABASE_NAME=bitnami_moodle
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
+      # Fitxategi handiak inportatu behar badira ondorengo 2 parametroak erabili
       - PHP_UPLOAD_MAX_FILESIZE=400M
       - PHP_POST_MAX_SIZE=400M
     volumes:
@@ -91,11 +95,32 @@ volumes:
     driver: local
 {% endhighlight %}
 
+Fitxategi hau dagoen tokian **docker-compose up -d** egin eta segundo batzuetan dagokion makinaren IP helbidean Moodle bat izan beharko genuke.
+Denak ondo funtzionatu badu, systemd programatu dezakegu sistema abiatzerakoan Moodle hasteko. Horretarako **/etc/systemd/system** helbidean **docker-moodle-app.service**
+izeneko fitxategia sortu behar da ondorengo edukiarekin:
+{% highlight conf %}
+[Unit]
+Description=Docker Compose Application Service For Moodle
+Requires=docker.service
+After=docker.service
 
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/moodle/moodle/
+ExecStart=/usr/bin/docker-compose up -d
+ExecStop=/usr/bin/docker-compose down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
+{% endhighlight %}
+
+### Apache Hadoop Dockerren
 Apache/Hadoop docker ofiziala erbiltzeko docker irudi ofiziala erabili dezakegu.
 Bertan adierazten den konfigurazioa erabilita exekutatzerakoan arazoak izan ditugu "ulimits" delakoarekin. Konfigurazio fitxategian mugak aldatuta funtzionatzen du. Hona hemen adibide bat:
 
-{% highlight config %}
+{% highlight yaml %}
 services:
    namenode:
       image: apache/hadoop:3
