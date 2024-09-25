@@ -25,7 +25,7 @@ sudo apt install openjdk-8-jdk
 Editatu ``~/.bashrc`` eta ondorengo helbideak zehaztu:
 {% highlight conf %}
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export HADOOP_HOME=/home/hadoop/hadoop
+export HADOOP_HOME=/home/hadoop/hadoop-3.4.0
 export HADOOP_INSTALL=$HADOOP_HOME
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME
@@ -39,6 +39,11 @@ export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 Editatu ``$HADOOP_HOME/etc/hadoop/hadoop-env.sh`` eta ondorengo helbideak zehaztu:
 {% highlight conf %}
 JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+{% endhighlight %}
+
+Editatu ``$HADOOP_HOME/.profile`` eta gehitu:
+{% highlight conf %}
+PATH=/home/hadoop/hadoop-3.4.0/bin:/home/hadoop/hadoop-3.4.0/sbin:$PATH
 {% endhighlight %}
 
 Ondoren namenode eta datanode direktorioak sortuko ditugu erabiltzailearen erroan:
