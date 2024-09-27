@@ -81,18 +81,20 @@ mkdir -p ~/hadoopdata/hdfs/{namenode,datanode}
 
 ``$HADOOP_HOME/etc/hadoop/mapred-site.xml`` fitxategia editatu:
 {% highlight conf %}
+</configuration>
   <property>
     <name>yarn.app.mapreduce.am.env</name>
-    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/home/hadoop/hadoop/bin/hadoop</value>
+    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/bin/hadoop</value>
   </property>
   <property>
     <name>mapreduce.map.env</name>
-    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/home/hadoop/hadoop/bin/hadoop</value>
+    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/bin/hadoop</value>
   </property>
   <property>
     <name>mapreduce.reduce.env</name>
-    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/home/hadoop/hadoop/bin/hadoop</value>
+    <value>HADOOP_MAPRED_HOME=$HADOOP_HOME/bin/hadoop</value>
   </property>
+  </configuration>
 {% endhighlight %}
 ``$HADOOP_HOME/etc/hadoop/yarn-site.xml`` fitxategia editatu:
 {% highlight conf %}
@@ -104,4 +106,16 @@ mkdir -p ~/hadoopdata/hdfs/{namenode,datanode}
 </configuration>
 {% endhighlight %}
 
+``/etc/hosts``
+{% highlight conf %}
+127.0.0.1 localhost
+
+192.168.85.2 namenode
+192.168.85.3 datanode
+{% endhighlight %}
+
+
 Puntu honetararte cluster guztiko makinentzako balioko luke instalazioak. Hemendik aurrera clusterreko makina bakoitza bereizten hasiko ginakete.
+hostname aldatu
+$HADOOP_HOME/etc/hadoop/workers aldatu
+.ssh/config fitxategia ere editatu behar da nodoak alkarren artean komunikatu ahal izateko
