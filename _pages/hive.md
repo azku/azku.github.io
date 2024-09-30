@@ -31,3 +31,15 @@ Docker kontenedore barrura kopiatu:
 Beelinera konektatu 
 
 sortu taula``create table hive_ratings(userId int, movieId int, rating float, tmp int);``
+
+
+## HIVE nodoa Hadoopeko isardvdi iruditik abiatuta
+    ``/etc/hosts`` eta ``/etc/hostname`` eta ``/etc/netplan/50...`` aldatu ostean
+``wget https://dlcdn.apache.org/hive/hive-4.0.0/apache-hive-4.0.0-bin.tar.gz``
+
+``tar -xzvf apache-hive-4.0.0-bin.tar.gz``
+
+``rrm apache-hive-4.0.0-bin.tar.gz``
+
+.profile aldatu:
+``PATH=/home/hadoop/apache-hive-4.0.0-bin:/home/hadoop/hadoop-3.4.0/bin:/home/hadoop/hadoop-3.4.0/sbin:$PATH``
