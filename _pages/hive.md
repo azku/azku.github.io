@@ -43,3 +43,55 @@ sortu taula``create table hive_ratings(userId int, movieId int, rating float, tm
 
 .profile aldatu:
 ``PATH=/home/hadoop/apache-hive-4.0.0-bin:/home/hadoop/hadoop-3.4.0/bin:/home/hadoop/hadoop-3.4.0/sbin:$PATH``
+
+## ml-100k jarduera
+u.data eta u.index fitxategiak HDFS sisteman daudelarik ``/ml-100k/`` direktorioi barruan. Datuak HDFSn daudenez **external** gakoa erabiliko dugu.
+
+create external table ratings(
+userID int,
+movieID int,
+rating int,
+epochseconds int)
+row format delimited fields terminated by '\t';
+
+LOAD DATA INPATH '/ml-100k/u.data' INTO TABLE ratings;
+
+Behin taulak lotutakoan (LOAD), Hadoopen bere HDFS partera eramaten ditu. kontuz ibili ezabatzerakoan!
+
+CREATE EXTERNAL TABLE names(
+movieID int,
+title string,
+release_date string,
+c1 string,
+url string,
+c01 string,
+c02 string,
+c03 string,
+c04 string,
+c05 string,
+c06 string,
+c07 string,
+c08 string,
+c09 string,
+c10 string,
+c11 string,
+c12 string,
+c13 string,
+c14 string,
+c15 string,
+c16 string,
+c17 string,
+c18 string,
+c19 string
+)
+row format delimited fields terminated by '|';
+
+LOAD DATA INPATH '/ml-100k/u.item' INTO TABLE names;
+
+create view topMoviewIDs as 
+select movieID, count(MovieID) as ratingCount
+from ratings 
+group by movieID
+order by ratingCount DESC; 
+
+select n.title, ratingCount from topMoviewIDs t join names n on t.movieID= n.movieID;
