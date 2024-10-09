@@ -45,8 +45,10 @@ sortu taula``create table hive_ratings(userId int, movieId int, rating float, tm
 ``PATH=/home/hadoop/apache-hive-4.0.0-bin:/home/hadoop/hadoop-3.4.0/bin:/home/hadoop/hadoop-3.4.0/sbin:$PATH``
 
 ## ml-100k jarduera
+
 u.data eta u.index fitxategiak HDFS sisteman daudelarik ``/ml-100k/`` direktorioi barruan. Datuak HDFSn daudenez **external** gakoa erabiliko dugu.
 
+{% highlight sql %}
 create external table ratings(
 userID int,
 movieID int,
@@ -55,9 +57,11 @@ epochseconds int)
 row format delimited fields terminated by '\t';
 
 LOAD DATA INPATH '/ml-100k/u.data' INTO TABLE ratings;
+{% endhighlight %}
 
 Behin taulak lotutakoan (LOAD), Hadoopen bere HDFS partera eramaten ditu. kontuz ibili ezabatzerakoan!
 
+{% highlight sql %}
 CREATE EXTERNAL TABLE names(
 movieID int,
 title string,
@@ -84,14 +88,22 @@ c17 string,
 c18 string,
 c19 string
 )
-row format delimited fields terminated by '|';
+    row format delimited fields terminated by '|';
 
 LOAD DATA INPATH '/ml-100k/u.item' INTO TABLE names;
+{% endhighlight %}
 
-create view topMoviewIDs as 
-select movieID, count(MovieID) as ratingCount
-from ratings 
-group by movieID
-order by ratingCount DESC; 
+Datuetan dauden pelikuletatik puntuazio onena izan dutenak atera nahi dugu ondoren. Kontutan izan behar da, posible dela pelikularen batek puntuazio bakarra izatea. Horrelako kasuka baztertzeok, datuetan aterako ditugun pelikulek gutxienez 10 puntuazio jaso izan beharko dute.
 
-select n.title, ratingCount from topMoviewIDs t join names n on t.movieID= n.movieID;
+{% highlight sql %}
+create view if not exists avgRatings AS
+select movieid, avg(rating) as avgRating, count(movieid) as ratingCount
+from ratings
+group by movieid
+order by avgRating;
+
+select n.title, avgRating
+from avgRatings t join names n on t.movieid=n.movieID
+where ratingCount>10
+order by avgRating desc;
+{% endhighlight %}
