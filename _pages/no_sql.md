@@ -128,3 +128,29 @@ directors: 1,
 writers: 1, 
 countries: 1 
 })``
+
+
+## Cassandra
+
+Dockerren node bakarreko Cassandra ezarri. Bonus, 3 nodokoa lortu eskero.
+
+{% highlight yaml %}
+services:
+  cassandra-p:
+    image: "cassandra:latest"
+    container_name: "cassandra"
+    ports:
+      - "9042:9042"
+    environment:
+      - "MAX_HEAP_SIZE=256M"
+      - "HEAP_NEWSIZE=128M"
+ {% endhighlight %}
+
+SQL antzekoa ematen du baina ez da SQL eta taula bakoitzak derrigorrez izan behar du gako nagusia
+{% highlight sql %}
+CREATE KEYSPACE movielens WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND durable_writes = 'True';
+USE movielens ;
+CREATE TABLE users(user_id int, age int, gender text, occupation text, zip text, PRIMARY KEY (user_id));
+DESCRIBE TABLE users;
+SELECT * FROM users ;
+{% endhighlight %}

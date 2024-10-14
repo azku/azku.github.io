@@ -81,3 +81,7 @@ if __name__ == "__main__":
         print(movieNames[result[0]], result[1])
 
 {% endhighlight %}
+
+## pyspark instalatzeko
+JAVA instalazioa egotea beharrezkoa
+jdk-openjdk
