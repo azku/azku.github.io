@@ -18,10 +18,6 @@ HDFS-rekin zuzenean konparatuko bagenu ordea, latentzia litzateke datu base "han
 HDFS gainean eraikitzen da. Google BigTable ideian modeatua. CRUD api-a eskaintzen du. Auto shardin egiten du.
 Lerroetara atzipen azkarra eskaintzen du gako baten arabera.
 
-## CASANDRA
-HBASE-en antzeko ideia baina ez dauka master noderik. Nodo guztiek software berdina exekutatzen dute.
-availability over consistency. It will be consisten eventually.
-
 
 ## MongoDB
 
@@ -132,6 +128,9 @@ countries: 1
 
 ## Cassandra
 
+HBASE-en antzeko ideia baina ez dauka master noderik. Nodo guztiek software berdina exekutatzen dute.
+availability over consistency. It will be consisten eventually.
+
 Dockerren node bakarreko Cassandra ezarri. Bonus, 3 nodokoa lortu eskero.
 
 {% highlight yaml %}
@@ -145,12 +144,45 @@ services:
       - "MAX_HEAP_SIZE=256M"
       - "HEAP_NEWSIZE=128M"
  {% endhighlight %}
+ Behin docker-compose fitxategia sortuta, contenedorea martxan jarri eta cassandraren shelera konektatu gaitezkez:
 
-SQL antzekoa ematen du baina ez da SQL eta taula bakoitzak derrigorrez izan behar du gako nagusia
+{% highlight shell %}
+docker-compose up -s
+docker exec -it cassandra cqlsh
+{% endhighlight %}
+
+Cassandra atzitzeko, SQL antzeko lengoaia erabiltzen da baina ez da SQL eta taula bakoitzak derrigorrez izan behar du gako nagusia.
+
+
+### Pelikulen balorazioa ariketa
+Ariketa honetan, CSV fitxategi batzutatik abiatuta, inportazio bat eta ondoren query batzuk burutuko ditugu.
+Jaitsi beharreko fitxategiak [url honetan](https://dw9ne0o7jcasn.cloudfront.net/hadoop/HadoopMaterials.zip) aurkitu daitezke. Gure kasuan ratings.data eta u.item fitxategiak inportatu beharko ditugu. Batean filmen datuak azaltzen dira eta bestean balorazioak. Bi fitxategia hauek inportatu eta konbinatuta, helburua puntuazio txarrena jaso duten 10 filmak ateratzea izango da. Adi fitxategiak banaketarako karaktere desberdinak erabiltzen bait dituzte.
+
+Puntuaketetan zutabeak ondorengoak dira: user_id;movie_id;rating;epoch
+Pelikulen zutabeak ondorengoak dira: movie id | movie title | release date | video release date |
+              IMDb URL | unknown | Action | Adventure | Animation |
+              Children's | Comedy | Crime | Documentary | Drama | Fantasy |
+              Film-Noir | Horror | Musical | Mystery | Romance | Sci-Fi |
+              Thriller | War | Western 
+Azken 19 zutabeek, pelikula zein generotakoa den adierazten dute.
+
+Aztertu nola banatuta dauden fitxategiak.
+
+Datu-basera konektatutakoan, lehenengo pausoa gako-espazioa (KEYSPACE) sortzea da:
+
 {% highlight sql %}
-CREATE KEYSPACE movielens WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND durable_writes = 'True';
-USE movielens ;
-CREATE TABLE users(user_id int, age int, gender text, occupation text, zip text, PRIMARY KEY (user_id));
-DESCRIBE TABLE users;
-SELECT * FROM users ;
+DROP KEYSPACE IF EXISTS films;
+CREATE KEYSPACE films WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND durable_writes = 'True';
+USE films;
+DROP TABLE ratings;
+CREATE TABLE ratings(user_id int, movie_id int, rating int, epoch int, PRIMARY KEY (user_id));
+DROP TABLE IF EXISTS movie;
+
+CREATE TABLE movie(movie_id int, title text, release_date text, video_release_date text, url text,unkown text,action int, adventure int, animation int, children int, comedy int, crime int, documentary int, drama int, fantasy int, noir int, horror int, musical int, mystery int, romance int, sci_fi int, thriller int, war int, western int, PRIMARY KEY (movie_id));
+#DESCRIBE TABLE ratings;
+#SELECT * FROM ratings;
+
+COPY ratings (user_id, movie_id, rating,epoch) FROM '/tmp/u.data' WITH  DELIMITER=';';
+COPY movie (movie_id, title, release_date, video_release_date, url,unkown,action, adventure, animation, children, comedy, crime, documentary, drama, fantasy, noir, horror, musical, mystery, romance, sci_fi, thriller, war, western)  FROM '/tmp/u.item' WITH DELIMITER='|';
+
 {% endhighlight %}
