@@ -1,4 +1,4 @@
-
+## Spark osoa instalatu
 
 Spark instalatzeko hadoopeko namenodea erabiliko dugu. Bertan Spark jaitzi eta deskonprimitu ostean:
  `` wget https://www.apache.org/dyn/closer.lua/spark/spark-3.5.3/spark-3.5.3-bin-hadoop3.tgz ``
@@ -20,6 +20,28 @@ textFile = sqlContext.read.option("header", "true").option("delimiter", ",").for
 
 {% endhighlight %}
 
+## Pyspark bakarrik instalatu
+Ubuntu 24 zerbitzari makina batean spark instalatu nahi badugu, aukera bat pip instalatzea da.
+Systema honetan pip instalatzeko, ingurune berezi bat ezartzera behartuta gaude. Behin ingurunea ezarrita, 
+
+{% highlight shell %}
+sudo apt install python3-pip
+sudo apt install python3.12-venv
+python3 -m venv .venv
+.venv/bin/pip3 install pyspark[sql,ml,mllib]
+.venv/bin/pyspark
+{% endhighlight %}
+
+## M&M jarduera
+fitxategia lortu
+https://raw.githubusercontent.com/databricks/LearningSparkV2/refs/heads/master/chapter2/py/src/data/mnm_dataset.csv
+
+{% highlight python %}
+from pyspark.sql.functions import count as _count
+mnm_file ="mnm_dataset.csv"
+count_mnm_df = (mnm_df .select("State", "Color", "Count") .groupBy("State", "Color") .agg(_count("Count").alias("Total")) .orderBy("Total", ascending=False))
+count_mnm_df.show(n=60, truncate=False)
+{% endhighlight %}
 
 ## Jarduera
 Filmak eta beraien balorazioak dituzten fitxategiak hartuta, hauek HDFS barruan sartuko ditugu eta Spark bidez balorazio txarrena daukaten filmak atera beharko ditugu.
