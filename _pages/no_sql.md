@@ -147,7 +147,7 @@ services:
  Behin docker-compose fitxategia sortuta, contenedorea martxan jarri eta cassandraren shelera konektatu gaitezkez:
 
 {% highlight shell %}
-docker-compose up -s
+docker-compose up -d
 docker exec -it cassandra cqlsh
 {% endhighlight %}
 
@@ -174,7 +174,7 @@ Datu-basera konektatutakoan, lehenengo pausoa gako-espazioa (KEYSPACE) sortzea d
 DROP KEYSPACE IF EXISTS films;
 CREATE KEYSPACE films WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'} AND durable_writes = 'True';
 USE films;
-DROP TABLE ratings;
+DROP TABLE if exists ratings;
 CREATE TABLE ratings(user_id int, movie_id int, rating int, epoch int, PRIMARY KEY (user_id));
 DROP TABLE IF EXISTS movie;
 
@@ -182,7 +182,50 @@ CREATE TABLE movie(movie_id int, title text, release_date text, video_release_da
 #DESCRIBE TABLE ratings;
 #SELECT * FROM ratings;
 
-COPY ratings (user_id, movie_id, rating,epoch) FROM '/tmp/u.data' WITH  DELIMITER=';';
+COPY ratings (user_id, movie_id, rating,epoch) FROM '/tmp/ratings.data' WITH  DELIMITER=';';
 COPY movie (movie_id, title, release_date, video_release_date, url,unkown,action, adventure, animation, children, comedy, crime, documentary, drama, fantasy, noir, horror, musical, mystery, romance, sci_fi, thriller, war, western)  FROM '/tmp/u.item' WITH DELIMITER='|';
+
+{% endhighlight %}
+
+
+
+Bide honetatik jarraituta, laister konturatzen gara Cassandra ez dela datu-base erlazional bat. Beraz datu-basea denormalizatu beharko dugu.
+
+{% highlight sql %}
+CREATE TABLE IF NOT EXISTS movies_db.movie_ratings (
+    movie_id UUID,
+    title TEXT,
+    release_date DATE,
+    video_release_date DATE,
+    url TEXT,
+    unknown BOOLEAN,
+    action BOOLEAN,
+    adventure BOOLEAN,
+    animation BOOLEAN,
+    children BOOLEAN,
+    comedy BOOLEAN,
+    crime BOOLEAN,
+    documentary BOOLEAN,
+    drama BOOLEAN,
+    fantasy BOOLEAN,
+    noir BOOLEAN,
+    horror BOOLEAN,
+    musical BOOLEAN,
+    mystery BOOLEAN,
+    romance BOOLEAN,
+    sci_fi BOOLEAN,
+    thriller BOOLEAN,
+    war BOOLEAN,
+    western BOOLEAN,
+    user_id UUID,
+    rating FLOAT,
+    epoch TIMESTAMP,
+    PRIMARY KEY (movie_id, user_id)
+);
+{% endhighlight %}
+
+Eta python erabilitz fitxategi biak batu behar dira. Cassandra python erabilitz atzitzeko pakete bat instalatu behar dugu.
+{% highlight python %}
+pip install cassandra-driver
 
 {% endhighlight %}
