@@ -105,5 +105,32 @@ if __name__ == "__main__":
 {% endhighlight %}
 
 ## pyspark instalatzeko
-JAVA instalazioa egotea beharrezkoa
-jdk-openjdk
+pip python instalatzailea erabiliko dugu. Gaur eguneko sistema eragile askok **pip**ren erabilera mugatuta dutenez, python ingurumen bat sortu beharko dugu aurrena.
+
+Beste alde batetik, kontutan izan sistema eragilean JAVA instalazioa egotea beharrezkoa dela.
+
+{% highlight shell %}
+sudo apt install jdk-openjdk
+python3 -m venv .venv
+source ~/.venv/bin/activate
+pip3 install pyspark[sql,ml,mllib]
+{% endhighlight %}
+
+## Spark connect
+Bezero zerbitzari modeloa aplikatu daikete Sparkekin. Horretaraka ordea, aurretik instalatutako pyspark inguruneari pakete gehiago gehitu behar dizkiogu:
+
+{% highlight shell %}
+pip install distutils
+pip install setuptools
+pip install grpcio
+pip install google
+pip install --upgrade google-api-python-client
+pip install --upgrade grpc_status
+pip install --upgrade grpc_statuspip install grpcio-status
+pip install grpcio-status
+pyspark --remote sc://192.168.85.2
+{% endhighlight %}
+
+{% highlight python %}
+spark.read.load("hdfs:///ml-100k/u.item)
+{% endhighlight %}

@@ -192,34 +192,14 @@ COPY movie (movie_id, title, release_date, video_release_date, url,unkown,action
 Bide honetatik jarraituta, laister konturatzen gara Cassandra ez dela datu-base erlazional bat. Beraz datu-basea denormalizatu beharko dugu.
 
 {% highlight sql %}
-CREATE TABLE IF NOT EXISTS movies_db.movie_ratings (
-    movie_id UUID,
+DROP TABLE  IF EXISTS films.movie_ratings;
+CREATE TABLE films.movie_ratings (
+    movie_id int,
     title TEXT,
-    release_date DATE,
-    video_release_date DATE,
-    url TEXT,
-    unknown BOOLEAN,
-    action BOOLEAN,
-    adventure BOOLEAN,
-    animation BOOLEAN,
-    children BOOLEAN,
-    comedy BOOLEAN,
-    crime BOOLEAN,
-    documentary BOOLEAN,
-    drama BOOLEAN,
-    fantasy BOOLEAN,
-    noir BOOLEAN,
-    horror BOOLEAN,
-    musical BOOLEAN,
-    mystery BOOLEAN,
-    romance BOOLEAN,
-    sci_fi BOOLEAN,
-    thriller BOOLEAN,
-    war BOOLEAN,
-    western BOOLEAN,
-    user_id UUID,
+    release_date TEXT,
+    user_id int,
     rating FLOAT,
-    epoch TIMESTAMP,
+    epoch TEXT,
     PRIMARY KEY (movie_id, user_id)
 );
 {% endhighlight %}
