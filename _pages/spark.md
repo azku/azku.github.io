@@ -132,3 +132,29 @@ pyspark --remote sc://192.168.85.2
 {% highlight python %}
 spark.read.load("hdfs:///ml-100k/u.item)
 {% endhighlight %}
+## Advanced Pyspark for Exploratory Data Analysis
+https://www.kaggle.com/code/markytools/advanced-pyspark-for-exploratory-data-analysis
+Idatzi jupyter notebook bat emandako pausoekin
+1. irakurri datuak
+df = spark.read.json(filename_data, mode="DROPMALFORMED")
+2. dataren eskema erakutsi
+print('Data overview')
+df.printSchema()
+print('Columns overview')
+pd.DataFrame(df.dtypes, columns = ['Column Name','Data type'])
+3. Gehitu zutabe bat lerro bakoitzeko balio huts kopurua gehituko duena
+4. Kirol bakoitzeko dautak pilakatu eta kontatu, alegia zenbat dauden azaldu
+ranked_sport_users_df = df.select(df.sport, df.userId) \
+    .distinct() \
+    .groupBy(df.sport) \
+    .count() \
+    .orderBy("count", ascending=False)
+
+# Top 5 workout types
+highest_sport_users_df = ranked_sport_users_df.limit(5).toPandas()
+# Rename column name : 'count' --> Users count
+highest_sport_users_df.rename(columns = {'count':'Users count'}, inplace = True)
+# Caculate the total users, we will this result to compute percentage later
+total_sports_users = ranked_sport_users_df.groupBy().sum().collect()[0][0]
+
+5. (extra) 5 kirol praktikatuenak (gehien praktikatzen dutenak) erakutsi grafika batean
