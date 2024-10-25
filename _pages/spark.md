@@ -120,13 +120,11 @@ pip3 install pyspark[sql,ml,mllib]
 Bezero zerbitzari modeloa aplikatu daikete Sparkekin. Horretaraka ordea, aurretik instalatutako pyspark inguruneari pakete gehiago gehitu behar dizkiogu:
 
 {% highlight shell %}
-pip install distutils
 pip install setuptools
 pip install grpcio
 pip install google
 pip install --upgrade google-api-python-client
-pip install --upgrade grpc_status
-pip install --upgrade grpc_statuspip install grpcio-status
+
 pip install grpcio-status
 pyspark --remote sc://192.168.85.2
 {% endhighlight %}
