@@ -1,9 +1,11 @@
 ---
 layout: page
-title: Hue Docker erabilita
-permalink: /hue/
+title: Big Data MonitorizazioaHue Docker erabilita
+permalink: /monitorizazioa/
 ---
+## YARN
 
+## Hue
 {% highlight yaml %}
 services:
   cloudera:
