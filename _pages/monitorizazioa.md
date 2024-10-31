@@ -4,6 +4,12 @@ title: Big Data MonitorizazioaHue Docker erabilita
 permalink: /monitorizazioa/
 ---
 ## YARN
+Hadoop 2-rekin sortu zen. Map Reduce programazioa eta errekurtsoen kudeaketa banatzen ditu.
+YARNen garapenak, gerora Spark edo TEZ bezalako teknologiak inplementatu ahal izatea ekarri zuen.
+
+## TEZ
+Map Reduce alternatiba bezala aurkezten da. Beste teknologia bat erabilita, DAG edo Directed Acyclic Graphs, prozesamendu banatua modu efizienteago batean burutzen saiatzen da.
+Sparken oinarrizko ideaia antzekoa erabiltzen du.
 
 ## Hue
 {% highlight yaml %}
