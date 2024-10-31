@@ -28,3 +28,14 @@ model = YOLO("yolov8m.pt")
 
 results = model.predict("cat_dog.jpg")
 {% endhighlight %}
+
+
+## Dokumentuak Igotzeko
+Probatzen gabiltzan gailuek, wifi sarera konektatzeko dauketen zailtasuna dela eta, hasierako bertsio baterako datuak webgune baten bitartez igotzea proposatu dugu.
+Horretarako OVHCloud plataforman zerbitzari bat jarri dugu Ubuntu 24.04 Sistema Eragile batekin instalaturik.
+
+Bertan Docker kontainerrak erabilita, Wordpress webgune bat ezarriko dugu eta hau editatu bertan fitxategiak igo ahal izateko.
+
+Webgunea http://fptxurdinaga.in:8080/ helbidean jarri da eskuragarri.
+
+Worpressen **Wordpress File Upload** plugina instalatu instalatu beharko dugu fitxategiak igotzeko gai izateko.
