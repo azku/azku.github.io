@@ -314,3 +314,6 @@ if oraingo_lagin_puntua == lagin_puntua:
 {% highlight shell %}
 hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.4.0.jar  -file /opt/hadoop/etc/hadoop/mapper.py    -mapper "python /opt/hadoop/etc/hadoop/mapper.py" -file /opt/hadoop/etc/hadoop/reducer.py   -reducer "python /opt/hadoop/etc/hadoop/reducer.py" -input /ibaiak/fisika_kimika.csv -output /ibaiak/emaitzak
 {% endhighlight %}
+
+
+hdfs dfs -copyToLocal /ibaiak/1_ariketa_emaitzak /tmp/
