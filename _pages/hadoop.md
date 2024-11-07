@@ -135,7 +135,15 @@ Zihurtatu **unzip** programa instalatuta dagoela
 biologiako fitxategiak alde batetik, eta fisika/kimikakoak bestetik kateatzea gomendatzen da: ``cat *_fq.csv > fisika_kimika.csv``
 HDFSra inportatzeko
 
+
 {% highlight shell %}
+head -n 1 agu126_measure_bi.csv > biologia.csv
+tail -q -n+2 *_bi.csv >> biologia.csv
+
+head -n 1 agu126_measure_bi.csv > fisika_kimika.csv
+tail -q -n+2 *_fq.csv >> fisika_kimika.csv
+
+
 sudo docker exec -it namenode hdfs dfs -put ibaiak /
 sudo docker cp ibaiak/ namenode:/tmp/
 {% endhighlight %}
@@ -317,3 +325,35 @@ hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.4.0.jar  -file 
 
 
 hdfs dfs -copyToLocal /ibaiak/1_ariketa_emaitzak /tmp/
+
+### 2. Atala
+
+#### Soluzioa
+
+{% highlight python %}
+import pyspark.sql.functions as f
+
+fiki = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/fisika_kimika.csv")
+puntuak = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/samplePoints.csv")
+bio = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/biologia.csv")
+#ezabatu behar direnak
+bio_ezabatu = ['Date', 'Hour', 'Type',  'Parameter',  'Operator',  'Unit', 'Additional information', 'Situation', 'Level', 'Depth']
+fiki_ezabatu =
+bio = bio.drop(*bio_ezabatu)
+
+print(fiki.summary().collect()[0].__getitem__("Sample Point Code"))
+
+
+#berizendatu 
+for old, new in zip(fiki.columns, [x+"_fiki" for x in fiki.columns]):
+    fiki = fiki.withColumnRenamed(old, new)
+for old, new in zip(bio.columns, [x+"_bio" for x in bio.columns]):
+    bio = bio.withColumnRenamed(old, new)
+
+
+
+r = puntuak.join(fiki, puntuak.Code == f.col("Sample Point Code_fiki"), 'inner').join(bio, puntuak.Code == f.col("Sample Point Code_bio"))
+
+print(r.summary().collect()[0].__getitem__("Sample Point Code"))
+
+{% endhighlight %}
