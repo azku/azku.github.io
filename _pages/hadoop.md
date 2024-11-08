@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Hadoop Ubuntu Server batean
+title: Hadoop
 permalink: /hadoop/
 ---
 
@@ -122,19 +122,19 @@ $HADOOP_HOME/etc/hadoop/workers aldatu
 
 ## Azterketa
 ### 1 Atala: Hadoop Core
-Datuak ondorengo URLan aurkituko dituzue [https://opendata.euskadi.eus/katalogoa/-/euskadiko-ibaietako-uren-kalitatea-2023an/](https://opendata.euskadi.eus/katalogoa/-/euskadiko-ibaietako-uren-kalitatea-2023an/)
-Jasotako fitxategiak deskonprimitu eta HDFS sistema batean sartu beharko dira. 3 fitxategi mota aurkituko ditugu: Alde batetik langin puntuak izango ditugu. Hemen gainontzeko fitxategietan agertzen diren laginak non hartuak izan diren ikusi daiteke. Beste alde batetik neurketa biologikoak eta neurketa fisiko/kimikoak ditugu. Hauek, hasierako fitxategiko lerro bakoitzeko fitxategi bat izango dute.
-Behin datuak jeitsita ditugunean, HDFS-ra sartzeko, 3 fitxategitan bihurtzea gomendatzen da. Horretarako neurketa biologiko guztiak alde batetik, eta neurketa fisiko/kimikoak, bestetik, fitxategi 2tara atzxikitzea gomendatzen da.
-Inportaziorako, Isardeko makinan aurrekonfigurtutako docker-compose.yml bat daukazue. Honek namenode1 eta 2 datanodeko ingurune bat ezartzen du.
-Litekena da sarrera standarretik fitxategia irakurtzerakoan, enkoding arazoak izatea. Irakurketa burutu baino lehen ``sys.stdin.reconfigure(encoding='latin-1')`` erabilita konpondu genezake.
-Map Reduce algoritmoa erabiliz gune desberdinetako ur tenperatura mediak atera beharko dira
+
+Datuak ondorengo URLan aurkituko dituzue [https://opendata.euskadi.eus/katalogoa/-/euskadiko-ibaietako-uren-kalitatea-2023an/](https://opendata.euskadi.eus/katalogoa/-/euskadiko-ibaietako-uren-kalitatea-2023an/). Bertan 3 CSV daude: Lagin putntuak, Neuketak (biologikoa) eta Neurketak (fisiko/kimikoa). Fitxategiak Isardeko makinara jaitsi beharko dira.
+Jasotako fitxategiak deskonprimitu eta HDFS sistema batean sartu beharko dira. 3 fitxategi mota aurkituko ditugu: Alde batetik langin puntuak izango ditugu. Hemen gainontzeko fitxategietan agertzen diren laginak non hartuak izan diren ikusi daiteke. Beste alde batetik neurketa biologikoak eta neurketa fisiko/kimikoak ditugu. Hauek, hasierako fitxategiko lerro bakoitzeko fitxategi bat izango dute. Kontuz fitxategien burukoekin.
+Behin datuak jaitsita ditugunean, HDFS-ra sartzeko, 3 fitxategitan bihurtzea gomendatzen da. Horretarako neurketa biologiko guztiak alde batetik, eta neurketa fisiko/kimikoak, bestetik, fitxategi 2tara atxikitzea gomendatzen da. Hau burututakoan 3 fitxategi izango dituzue eta horiek kontenedore barrura sartzeko docker-composeko namenodean ibaiak izeneko karpeta baten parekatzea prestatu dela ikusiko duzue. Erabili direktorio hori fitxategi horiek antolatzeko.
+Inportaziorako, Isardeko makinan aurrekonfiguratutako docker-compose.yml bat daukazue. Honek namenode1 eta 2 datanodeko ingurune bat ezartzen du.
+Litekena da sarrera standarretik fitxategia irakurtzerakoan, enkoding arazoak izatea. Maperrean Irakurketa burutu baino lehen ``sys.stin = codecs.getwriter('utf-8')(sys.stdin)`` erabilita konpondu genezake.
+Map Reduce algoritmoa erabiliz gune desberdinetako ur tenperatura batezbestekoa atera beharko da. Exekuzioaren ondoren, emaitzak 1_ariketa_emaitzak izeneko direktorio batean utzi beharko dira HDFS barnean. Ondoren direktorio hori fitxategi sistema lokalera atera beharko da, alegia Isardeko makinara (dockerretik kanpo eta erabiltzailearen erroan “~”). 
+
 
 #### Soluzioa
 Zihurtatu **unzip** programa instalatuta dagoela
 
-biologiako fitxategiak alde batetik, eta fisika/kimikakoak bestetik kateatzea gomendatzen da: ``cat *_fq.csv > fisika_kimika.csv``
-HDFSra inportatzeko
-
+biologiako fitxategiak alde batetik, eta fisika/kimikakoak bestetik kateatzea gomendatzen da. Kateaketan fitxategi bakoitzean dagoen burukoen lehenengo lerroa ez dugu kopiatu behar:
 
 {% highlight shell %}
 head -n 1 agu126_measure_bi.csv > biologia.csv
@@ -326,34 +326,65 @@ hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.4.0.jar  -file 
 
 hdfs dfs -copyToLocal /ibaiak/1_ariketa_emaitzak /tmp/
 
-### 2. Atala
+### 2. Atala: Spark
+Aurreko ariketan HDFS-n kargatutako datuetaz baliatuz, oraingo honetan Pysparken burutuko dugu ariketa. Pythonen idatzitako programa bat burutu beharko da, ondorendo eskakizunak beteaz:
+3 csv fitxategi antolatu dira HDFSn, bakoitza Pysparkeko dataframe batean kargatu beharko da.
+Biologia eta fisika-kimikako 2 fitxategietatik ondorengo zutabeak ez zaizkigu interesatzen: ['Date', 'Hour', 'Type',	'Operator',  'Unit', 'Additional information', 'Situation', 'Level', 'Depth'] DataFramean karga egin eta gero, ezabatu egin beharko dira.
+Aurreko paragrafoan aipatutako 2 fitxategiek, zutabe berdinak dituzte. DataFrame biak errenkadak batzen diren beste batean konbinatu beharko dira. Alegia, emaitzan izango dugun DataFrame-ak, aurreko 2 Dataframen errenkada kopuruaren batura izango den errenkada kopurua izango du.
+Lortu berri dugun DataFrame-a, lagin puntuak adierazten dituen beste DataFramearekin lotu (join) beharko da. Kontutan izan, izen bereko zutabeak egon daitezkeela. Kasu horretan zutabeak berrizendatu beharko dira.
+Daturik galtzen ez dela ziurtatu beharko da. Horretarako programaren exekuzioan imprimatu eragiketa burutu aurretik eta ostean dataframeak dituen datu kopuruak zehaztuz.
+Herriz herriko uraren tenperatura media, kontua, maximoa, minimoa eta taldean dauden elementu kopurua kalkulatu. Kontu izan balioen mota (type) zein den.
+Agregatutako balioak erakutsi eta lortutako balioak logikoak diren arrazonatu.
+Azkenik, lurralde historiko bakoitzean errekek daramaten berunaren konparazioa egin nahi dugu. Horretarako, berunaren (Plomo) neurketak filtratu beharko dira. Lurralde desberdinak zutabeetan egotea eskatzen da eta emaitzetan bataz-besteko balioak aterako dira. Emaitzak ondorengo itxura izan behar du:
 
 #### Soluzioa
 
 {% highlight python %}
 import pyspark.sql.functions as f
+from pyspark.sql import SparkSession
 
-fiki = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/fisika_kimika.csv")
-puntuak = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/samplePoints.csv")
-bio = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/biologia.csv")
+spark = SparkSession \
+    .builder \
+    .appName("Python Spark SQL basic example") \
+    .config("spark.some.config.option", "some-value") \
+    .getOrCreate()
+
+fiki = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/fisika_kimika.csv",inferSchema =True)
+puntuak = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/samplePoints.csv",inferSchema =True)
+bio = spark.read.option("delimiter", ";").option("header", True).option("encoding", "ISO-8859-1").csv("hadoop_docker/ibaiak/biologia.csv",inferSchema =True)
+
 #ezabatu behar direnak
-bio_ezabatu = ['Date', 'Hour', 'Type',  'Parameter',  'Operator',  'Unit', 'Additional information', 'Situation', 'Level', 'Depth']
-fiki_ezabatu =
-bio = bio.drop(*bio_ezabatu)
+ezabatu = ['Date', 'Hour', 'Type',    'Operator',  'Unit', 'Additional information', 'Situation', 'Level', 'Depth']
+bio = bio.drop(*ezabatu)
+fiki = fiki.drop(*ezabatu)
 
-print(fiki.summary().collect()[0].__getitem__("Sample Point Code"))
+fiki.summary().show()
+#fiki eta bio batu, bata bestearen azpian jarri
+fiki_bio = fiki.union(bio)
+
+#ziurtatu elementu kopurua
+print("==================================================================")
+print(fiki_bio.summary().collect()[0].__getitem__("Sample Point Code"))
+print("==================================================================")
+print("==================================================================")
+
+#berizendatu
+for old, new in zip(puntuak.columns, [x+"_p" for x in puntuak.columns]):
+     puntuak = puntuak.withColumnRenamed(old, new)
 
 
-#berizendatu 
-for old, new in zip(fiki.columns, [x+"_fiki" for x in fiki.columns]):
-    fiki = fiki.withColumnRenamed(old, new)
-for old, new in zip(bio.columns, [x+"_bio" for x in bio.columns]):
-    bio = bio.withColumnRenamed(old, new)
+#temperaturen analisia
+r = puntuak.join(fiki_bio, puntuak.Code_p == f.col("Sample Point Code"), 'inner')
+filtroa = r.filter(f.col("parameter").contains("Temperatura"))
+taldekatzea = filtroa.groupby("Territory_p")
+agregazioak = taldekatzea.agg(f.avg("Value"), f.max("Value"), f.min("Value"),f.count("Value"))
 
 
-
-r = puntuak.join(fiki, puntuak.Code == f.col("Sample Point Code_fiki"), 'inner').join(bio, puntuak.Code == f.col("Sample Point Code_bio"))
-
-print(r.summary().collect()[0].__getitem__("Sample Point Code"))
-
+#Berunaren analisia
+berun_filtroa = r.filter(f.col("parameter") == "Plomo")
+berun_taldekatzea = berun_filtroa.groupby("parameter").pivot("Territory_p").avg("Value").round(2)
+berun_taldekatzea = berun_taldekatzea.withColumn("Araba", f.round(berun_taldekatzea[1],2))
+berun_taldekatzea = berun_taldekatzea.withColumn("Bizkaia", f.round(berun_taldekatzea[2],2))
+berun_taldekatzea = berun_taldekatzea.withColumn("Gipuzkoa", f.round(berun_taldekatzea[3],2))
+berun_taldekatzea.select(berun_taldekatzea[0], berun_taldekatzea.Araba, berun_taldekatzea.Bizkaia, berun_taldekatzea.Gipuzkoa)
 {% endhighlight %}
