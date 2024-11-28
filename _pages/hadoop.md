@@ -386,5 +386,7 @@ berun_taldekatzea = berun_filtroa.groupby("parameter").pivot("Territory_p").avg(
 berun_taldekatzea = berun_taldekatzea.withColumn("Araba", f.round(berun_taldekatzea[1],2))
 berun_taldekatzea = berun_taldekatzea.withColumn("Bizkaia", f.round(berun_taldekatzea[2],2))
 berun_taldekatzea = berun_taldekatzea.withColumn("Gipuzkoa", f.round(berun_taldekatzea[3],2))
-berun_taldekatzea.select(berun_taldekatzea[0], berun_taldekatzea.Araba, berun_taldekatzea.Bizkaia, berun_taldekatzea.Gipuzkoa)
+f.round(berun_taldekatzea[3],2))
+berun_taldekatzea.select(berun_taldekatzea[0], berun_taldekatzea.Araba,
+berun_taldekatzea.Bizkaia, berun_taldekatzea.Gipuzkoa)
 {% endhighlight %}

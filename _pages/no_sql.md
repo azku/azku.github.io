@@ -209,3 +209,67 @@ Eta python erabilitz fitxategi biak batu behar dira. Cassandra python erabilitz 
 pip install cassandra-driver
 
 {% endhighlight %}
+
+### MongoDB inportazio eta kontsulta ariketa
+Ariketa honetan Dockerren prestatutako MongoDb martxan jarri eta erabili beharko duzue. Erabili beharreko makina IsardVDI
+hedapen bidez jasoko duzue. Bertan burutu beharko dira ariketaren pauso guztiak.
+1. Datu base bat sortu ondorengo izenarekin: BDS_ebaluaketa_1_[ Zure Izena] non [Zure izena] zure izena den. Sortu
+trafiko_kamerak izeneko bilduma bat sortu berri den datu-basearen barruan.
+2. Inportatu azterketarekin batera emandako fitxategia trafiko_kamerak bildumara. Mongosh bidez egiten baduzue, ondorengoa
+erabili dezakezue falta diren puntuak beteta:
+mongoimport --db BDS_ebaluaketa_1_[ Zure Izena] --collection ... --file ... --jsonArray --username root --
+authenticationDatabase=admin
+3. Egin ondorengo kontsultak:
+1. Iragazi "GI-20" errepidean aurkitutako kamera guztiak.
+2. Aurreko iragazkiaz gain, objektu bakoitzaren izenburua soilik proiektatu (ez da id-rik proiektatu behar).
+3. Iragazi "GI-20" errepidean aurkitutako kamera guztiak gehi "A-8"n aurkitutakoak. Tituloa, latitudea eta longitudea bakarrik
+proiektatu behar dira.
+
+4. Egin kontsulta bat, 3. kontsultan adierazitako iragazkiarekin baina emaitzak izenburuaren arabera ordenatuta gain (Z-tik A-
+ra).
+
+5. Egin kontsulta bat, 4. kontsultan erabilitakoarekin baina mugatu emaitza batera.
+
+
+#### Ingurunea ezarri
+Docker comppose bat erabiliko dugu MongoDB exekutatzeko. Adi partekatutako karpetari, sortu egin beharko da eta:
+
+{% highlight yaml %}
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - ./partekatuta:/tmp/partekatuta
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+{% endhighlight %}
+
+#### Ingurunea erabili
+Databasea sortrzeko  ondorengoa exekutatu beharko da kontainer barruan eta mongosh erabiliz:
+
+{% highlight mongo %}
+use BDS_ebaluaketa_1_asier
+db.createCollection("trafiko_kamerak")
+{% endhighlight %}
+
+Inportaziorako ondorengoa exekutatu beharko da kontainer barruan:
+
+{% highlight shell %}
+mongoimport --db BDS_ebaluaketa_1_asier --collection trafiko_kamerak --file /tmp/partekatuta/camaras_trafico.json --
+jsonArray --username root --authenticationDatabase=admin
+{% endhighlight %}
+
+Azkenik 5 kontsultak mongosh barruan horrela exekutatuko lirateke:
+
+{% highlight mongo %}
+db.trafiko_kamerak.find({"ROAD": "GI-20" } )
+db.trafiko_kamerak.find({"ROAD": "GI-20" },{TITLE:1,_id:0})
+db.trafiko_kamerak.find({$or:[{"ROAD": "GI-20" }, {"ROAD": "A-8" }]},{TITLE:1,_id:0, LATWGS84:1,
+LONWGS84:1})
+db.trafiko_kamerak.find({$or:[{"ROAD": "GI-20" }, {"ROAD": "A-8" }]},{TITLE:1,_id:0, LATWGS84:1,
+LONWGS84:1}).sort({"TITLE":-1})
+db.trafiko_kamerak.find({$or:[{"ROAD": "GI-20" }, {"ROAD": "A-8" }]},{TITLE:1,_id:0, LATWGS84:1,
+LONWGS84:1}).sort({"TITLE":-1}).limit(1)
+{% endhighlight %}
