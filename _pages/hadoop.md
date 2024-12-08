@@ -148,7 +148,7 @@ sudo docker exec -it namenode hdfs dfs -put ibaiak /
 sudo docker cp ibaiak/ namenode:/tmp/
 {% endhighlight %}
 Hadoop clusterra martxan jartzeko ondorengo docker-compose fitxaregia eta konfigurazioak erabiliko ditugu.
-{% highlight xml %}
+{% highlight yaml %}
 services:
   namenode:
     image: apache/hadoop:3.4
