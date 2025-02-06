@@ -34,6 +34,15 @@ Webgunea http://fptxurdinaga.in:8080/ helbidean jarri da eskuragarri.
 Worpressen **Contact Form 7**, **Drag and Drop Multiple File Upload - Contact Form 7** eta **Flamingo**  pluginak instalatu dira fitxategiak zerbitzarira web bitartez igotzeko.
 Lehenengo 2 pluginak Wordpressen inprimakiak sortzeko eta fitxategi anitz batera igotzeko aukera izateko erabili dira. Flamingo inprimaki bidalketa guztiak gordeta izateko erabili da.
 
+## Worpressetik (Docker) datuak ateratzea
+Datuak bi fasetan aterako dira. Alde batetik, iruadiak eskuz aterako dira docker komandoak erabilita.
+
+{% highlight bash %}
+docker cp wordpress:/var/www/html/wp-content/uploads/wp_dndcf7_uploads/wpcf7-files/*.png data/
+{% endhighlight %}
+
+Metadatuak, Flamengok Mysql datu-basean gordetzen ditu, eta hauek argazki fisikoekin lotzeko, python funtzio bat sortu da. Aurrez aipatu den bezala, kode guztia [github.com/azku/txirrindularitza](https://github.com/azku/txirrindularitza) URLan aurkitu daiteke. Fitxategi hau ``argazkien_metadatoak_ekarri.py`` deitzen da.
+
 ## Datuei begirada
 Prozesamenduak emaitza bezala eskaintzen duen fitxategia estatistikoki interpretatzeko, Metabase sistema bat instalatu da. Sistema horretara CSV fitxategia inportatu eta aztertu daiteke.
 
@@ -77,3 +86,10 @@ networks:
   metanet1:
     driver: bridge
 {% endhighlight %}
+
+## Yolov modeloak hasierako emaitzak 
+Yolov modelo gordinak lehenengo pausoko argazkietan nahiko emaitza onak lortzen ditu. Autobusak, kotxeak eta kamioiak estatistikoki bereiztea lortzen ditu.
+
+## Matrikulak
+Oinarrizko modeloetan ez dator matrikula identifikaziorako ahalmenik. Horretarako modeloa espezifikoki entrenatu beharra dago.
+https://github.com/Ammar-Abdelhady-ai/Licence-Plate-Detection-and-Recognition-using-YOLO-V8

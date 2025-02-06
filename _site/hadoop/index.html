@@ -56,67 +56,67 @@
 
 
 <span class="nb">sudo </span>docker <span class="nb">exec</span> <span class="nt">-it</span> namenode hdfs dfs <span class="nt">-put</span> ibaiak /
-<span class="nb">sudo </span>docker <span class="nb">cp </span>ibaiak/ namenode:/tmp/</code></pre></figure> <p>Hadoop clusterra martxan jartzeko ondorengo docker-compose fitxaregia eta konfigurazioak erabiliko ditugu.</p> <figure class="highlight"><pre><code class="language-xml" data-lang="xml">services:
-  namenode:
-    image: apache/hadoop:3.4
-    container_name: namenode
-    hostname: namenode
-    user: root
-    environment:
-      - HADOOP_HOME=/opt/hadoop
-    volumes:
-      - ./hadoop_namenode:/opt/hadoop/data/nameNode
-      - ./hadoop_config:/opt/hadoop/etc/hadoop
-      - ./start-hdfs.sh:/start-hdfs.sh
-    ports:
-      - "9870:9870"
-    command: [ "/bin/bash", "/start-hdfs.sh" ]
-    networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.2
+<span class="nb">sudo </span>docker <span class="nb">cp </span>ibaiak/ namenode:/tmp/</code></pre></figure> <p>Hadoop clusterra martxan jartzeko ondorengo docker-compose fitxaregia eta konfigurazioak erabiliko ditugu.</p> <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">services</span><span class="pi">:</span>
+  <span class="na">namenode</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">apache/hadoop:3.4</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">namenode</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">namenode</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">HADOOP_HOME=/opt/hadoop</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./hadoop_namenode:/opt/hadoop/data/nameNode</span>
+      <span class="pi">-</span> <span class="s">./hadoop_config:/opt/hadoop/etc/hadoop</span>
+      <span class="pi">-</span> <span class="s">./start-hdfs.sh:/start-hdfs.sh</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">9870:9870"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">/bin/bash"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/start-hdfs.sh"</span> <span class="pi">]</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="na">hdfs_network</span><span class="pi">:</span>
+        <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">172.20.0.2</span>
 
-  datanode1:
-    image: apache/hadoop:3.4
-    container_name: datanode1
-    hostname: datanode1
-    user: root
-    environment:
-      - HADOOP_HOME=/opt/hadoop
-    volumes:
-      - ./hadoop_datanode1:/opt/hadoop/data/dataNode
-      - ./hadoop_config:/opt/hadoop/etc/hadoop
-      - ./init-datanode.sh:/init-datanode.sh
-    depends_on:
-      - namenode
-    command: [ "/bin/bash", "/init-datanode.sh" ]
-    networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.3
+  <span class="na">datanode1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">apache/hadoop:3.4</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">datanode1</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">datanode1</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">HADOOP_HOME=/opt/hadoop</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./hadoop_datanode1:/opt/hadoop/data/dataNode</span>
+      <span class="pi">-</span> <span class="s">./hadoop_config:/opt/hadoop/etc/hadoop</span>
+      <span class="pi">-</span> <span class="s">./init-datanode.sh:/init-datanode.sh</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">namenode</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">/bin/bash"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/init-datanode.sh"</span> <span class="pi">]</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="na">hdfs_network</span><span class="pi">:</span>
+        <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">172.20.0.3</span>
 
-  datanode2:
-    # Similar configuration to datanode1, with different container_name and IP
-    image: apache/hadoop:3.4
-    container_name: datanode2
-    hostname: datanode2
-    user: root
-    environment:
-      - HADOOP_HOME=/opt/hadoop
-    volumes:
-      - ./hadoop_datanode2:/opt/hadoop/data/dataNode
-      - ./hadoop_config:/opt/hadoop/etc/hadoop
-      - ./init-datanode.sh:/init-datanode.sh
-    depends_on:
-      - namenode
-    command: [ "/bin/bash", "/init-datanode.sh" ]
-    networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.4
-networks:
-  hdfs_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.0.0/16</code></pre></figure> <p>init-datanode.sh</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="c">#!/bin/bash</span>
+  <span class="na">datanode2</span><span class="pi">:</span>
+    <span class="c1"># Similar configuration to datanode1, with different container_name and IP</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">apache/hadoop:3.4</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">datanode2</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">datanode2</span>
+    <span class="na">user</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">HADOOP_HOME=/opt/hadoop</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./hadoop_datanode2:/opt/hadoop/data/dataNode</span>
+      <span class="pi">-</span> <span class="s">./hadoop_config:/opt/hadoop/etc/hadoop</span>
+      <span class="pi">-</span> <span class="s">./init-datanode.sh:/init-datanode.sh</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">namenode</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">/bin/bash"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/init-datanode.sh"</span> <span class="pi">]</span>
+    <span class="na">networks</span><span class="pi">:</span>
+      <span class="na">hdfs_network</span><span class="pi">:</span>
+        <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">172.20.0.4</span>
+<span class="na">networks</span><span class="pi">:</span>
+  <span class="na">hdfs_network</span><span class="pi">:</span>
+    <span class="na">ipam</span><span class="pi">:</span>
+      <span class="na">driver</span><span class="pi">:</span> <span class="s">default</span>
+      <span class="na">config</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">172.20.0.0/16</span></code></pre></figure> <p>init-datanode.sh</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="c">#!/bin/bash</span>
 <span class="nb">rm</span> <span class="nt">-rf</span> /opt/hadoop/data/dataNode/<span class="k">*</span>
 <span class="nb">chown</span> <span class="nt">-R</span> hadoop:hadoop /opt/hadoop/data/dataNode
 <span class="nb">chmod </span>755 /opt/hadoop/data/dataNode
