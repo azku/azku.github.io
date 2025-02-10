@@ -93,3 +93,23 @@ Yolov modelo gordinak lehenengo pausoko argazkietan nahiko emaitza onak lortzen 
 ## Matrikulak
 Oinarrizko modeloetan ez dator matrikula identifikaziorako ahalmenik. Horretarako modeloa espezifikoki entrenatu beharra dago.
 https://github.com/Ammar-Abdelhady-ai/Licence-Plate-Detection-and-Recognition-using-YOLO-V8
+Hasierako 20 argazkirekin burututako entrenamenduak ez digu emaitza onik eskeini. YOLO modeloen entrenamenduari buruz sakondutakoan, argazki kopurua handiagoa izan behar dela ondorioztatu dugu.
+
+## Entrenamendurako prestaketa
+Ikusmen konputazionalerako modeloan entrenatu ahal izateko, sarrera datu multzo bat prestatu beharra dago egitura jakin batean. Alde batetik entrenamendurako argazkiak izango ditugu non identifikatu nahi diren etiketak aurre identifikatuta egongo diren eta bounding box delakoekin inguratuta.
+Ondoren test direktorio bat izango dugu. Egitura bera baina argazki gutxiago egongo dira hemen. Modeloak entrenamendua ikasi duenean, probak egiteko erabiliko du hau.
+
+Egitura hau sortzeko Label Studio erabiltzea erabaki dugu. Hasieran 400 argazki inportatu ditugu eta banan banan ekuz anotatu.
+Label Studiok badauka YOLOVek datuak behar dituen formatuan esportatzeko aukera. Aukera hori baliatuz, irudien direktorio bat eta anotazioen direktorio bat sortzen ditu.
+Entrenamendurako ordea, 3 direktorioko bikotetn (anotazioak eta irudiak) banatu behar dira. Horretarako python programatxo bat erabili dugu.
+
+Behin train, test eta val direktoriotan dena banatuta dagoela ``data.yaml`` fitxategia sortu dugu ondorengo edukiarekin:
+
+{% highlight yaml %}
+train: ../train/images
+val: ../val/images
+test: ../test/images
+
+nc: 1
+names: ['matrikula']
+{% endhighlight %}
