@@ -1,6 +1,6 @@
 {
-  "name": "Sistemak eta Aplikazio Informatikoak",
-  "short_name": "Sistemak eta Aplikazio Informatikoak",
+  "name": "SAI",
+  "short_name": "SAI",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
