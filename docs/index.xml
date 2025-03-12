@@ -40,4 +40,18 @@
  &lt;a class="anchor" href="#pasahitza---zaharra-baina-azkarra">#&lt;/a>
 &lt;/h2>
 &lt;p>Gure pasahitz maiteak ahanzturara bidaliko omen zituen mila eta bat alternatiba ikusi ditut urteetan.
-Errealitatea da, gaur egun, 2025ean behitzat, pasahitzak direla webgune gehienetara sartzeko, gehiengoak erabiltzen duen autetikazio tresna.&lt;/p></description></item></channel></rss>
+Errealitatea da, gaur egun, 2025ean behitzat, pasahitzak direla webgune gehienetara sartzeko, gehiengoak erabiltzen duen autetikazio tresna.&lt;/p></description></item><item><title>Txirrindularitza Proiektua</title><link>http://localhost:1313/docs/txirrindularitza/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/docs/txirrindularitza/</guid><description>&lt;h2 id="informazioa-prozesatzea">
+ Informazioa prozesatzea
+ &lt;a class="anchor" href="#informazioa-prozesatzea">#&lt;/a>
+&lt;/h2>
+&lt;p>Ubuntu zerbitzari instalazio batetik habiatuta, YOLOV8 modeloa erabiliz argazkien predikzioak egiteko ondorengo pausoak jarraitu behar dira.
+Lehenengo eta behin, beharrezkoak diren pakete pare bat instalatu eta python ingurune bat sortu beharko dugu. Ingurunea sortzearen arrazoia, &lt;code>pip&lt;/code> komandoaren erabilera da. Instalazio berrietan pythonen paketeak instalatzeko ingurune kontrolatuak sortzeko gomendia bultzatzen da:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1&lt;/span>&lt;span>sudo apt-get install -y libgl1-mesa-dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2&lt;/span>&lt;span>sudo apt-get install -y libglib2.0-0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3&lt;/span>&lt;span>sudo apt install python3.12-venv
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4&lt;/span>&lt;span>python3 -m venv .venv/
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5&lt;/span>&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6&lt;/span>&lt;span>.venv/bin/pip install ultralytics
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7&lt;/span>&lt;span>.venv/bin/pip install imutils
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Ondorengo python kodeak, direktorio batean dauden argazkiak aztertu eta obketu detekzioa aplikatuko die, CSV batean emaitzak hutsiz.
+Kode guztia &lt;a href="https://github.com/azku/txirrindularitza">github.com/azku/txirrindularitza&lt;/a> URLan aurkitu daiteke.&lt;/p></description></item></channel></rss>
